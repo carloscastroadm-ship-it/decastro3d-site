@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#111111">
+<title>DECASTRO3D | Catálogo</title>
+<style>
+:root{--bg:#101010;--panel:#191919;--panel2:#222;--gold:#c9a34a;--gold2:#e5c878;--text:#f5f2eb;--muted:#aaa49a;--line:#38342b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
+a{color:inherit}.wrap{max-width:1120px;margin:auto;padding:0 18px}
+header{background:linear-gradient(145deg,#080808,#1b1b1b);border-bottom:1px solid var(--line)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 0}
+.brand{font-weight:900;letter-spacing:2px;font-size:clamp(22px,4vw,34px)}.brand span{color:var(--gold)}
+.tag{font-size:11px;letter-spacing:2px;color:var(--muted);margin-top:5px}
+nav{display:flex;gap:10px;flex-wrap:wrap}button,.btn{border:1px solid var(--gold);background:var(--gold);color:#17130a;padding:11px 15px;border-radius:8px;font-weight:700;text-decoration:none;cursor:pointer}
+button.secondary,.btn.secondary{background:transparent;color:var(--gold2)}button.ghost{border-color:#555;background:transparent;color:#ddd}
+.hero{padding:38px 0 30px;display:grid;grid-template-columns:1.4fr .8fr;gap:25px;align-items:center}
+.kicker{color:var(--gold2);letter-spacing:3px;font-size:11px;font-weight:bold}.hero h1{font-size:clamp(34px,6vw,58px);line-height:1.02;margin:12px 0}.hero p{color:#c7c1b7;line-height:1.6;max-width:600px}
+.hero-card{border:1px solid var(--line);background:radial-gradient(circle at 50% 35%,#3a3020,#171717 65%);border-radius:18px;padding:28px;text-align:center;min-height:190px;display:grid;place-content:center}
+.hero-card .mark{font-size:52px;font-weight:900;color:var(--gold);letter-spacing:-4px}.hero-card small{letter-spacing:3px;color:#ddd}
+.controls{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:16px 0;border-top:1px solid var(--line)}
+.filters{display:flex;gap:8px;flex-wrap:wrap}.filter{background:#222;color:#ddd;border:1px solid #45413a;padding:9px 12px;border-radius:99px;font-size:13px}.filter.active{background:var(--gold);color:#17130a;border-color:var(--gold)}
+.search{background:#1d1d1d;border:1px solid #45413a;border-radius:8px;color:white;padding:11px 13px;min-width:min(100%,250px)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:12px 0 40px}
+.product{background:var(--panel);border:1px solid #34312a;border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.photo{aspect-ratio:1.15;background:linear-gradient(135deg,#252525,#111);display:grid;place-items:center;color:#817b70;font-size:13px;overflow:hidden}
+.photo img{width:100%;height:100%;object-fit:cover}.info{padding:15px;display:flex;flex-direction:column;gap:8px;flex:1}
+.category{color:var(--gold2);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:bold}
+.info h3{margin:0;font-size:18px}.desc{color:#bcb6ad;font-size:13px;line-height:1.5;min-height:38px}
+.meta{font-size:12px;color:#aaa}.price{font-size:22px;font-weight:800;color:var(--gold2);margin-top:auto;padding-top:8px}
+.actions{display:flex;gap:8px;margin-top:8px}.actions a{flex:1;text-align:center;font-size:12px;padding:10px 8px;border-radius:7px;text-decoration:none;background:var(--gold);color:#17130a;font-weight:bold}
+.empty{border:1px dashed #555;border-radius:14px;padding:32px;text-align:center;color:#c6c0b6;grid-column:1/-1;line-height:1.6}
+footer{border-top:1px solid var(--line);padding:25px 0 35px;color:#aaa;font-size:13px}
+.footerrow{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}.social{display:flex;gap:12px;flex-wrap:wrap;color:var(--gold2)}
+.admin{margin:15px 0 30px;border:1px solid var(--line);background:#171717;border-radius:14px;padding:18px;display:none}
+.admin.open{display:block}.admin h2{margin:0 0 14px;font-size:20px}.formgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+label{display:block;font-size:12px;color:#c9c2b7;margin-bottom:5px}input,select,textarea{width:100%;padding:10px;border:1px solid #49443a;background:#242424;color:#fff;border-radius:7px}
+textarea{min-height:75px;resize:vertical}.wide{grid-column:1/-1}.admin-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.notice{font-size:12px;color:#aaa;margin-top:10px;line-height:1.5}.adminlist{margin-top:16px;display:grid;gap:7px}.adminitem{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#222;padding:9px 11px;border-radius:8px;font-size:13px}
+@media(max-width:760px){.hero{grid-template-columns:1fr}.hero-card{min-height:130px}.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:500px){.top{align-items:flex-start;flex-direction:column}.grid{grid-template-columns:1fr}.formgrid{grid-template-columns:1fr}.wide{grid-column:auto}.hero{padding-top:28px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="wrap">
+  <div class="top">
+   <div><div class="brand">DECASTRO<span>3D</span></div><div class="tag">IMPRESSÃO 3D EM FILAMENTO E RESINA</div></div>
+   <nav><a class="btn secondary" href="index.html">Voltar ao cartão</a><a class="btn secondary" href="https://www.instagram.com/decastro.3d/" target="_blank" rel="noopener">Instagram</a><a class="btn" href="https://wa.me/5573998723371?text=Ol%C3%A1!%20Vim%20pelo%20cat%C3%A1logo%20da%20DECASTRO3D." target="_blank" rel="noopener">Falar no WhatsApp</a></nav>
+  </div>
+ </div>
+</header>
+<main class="wrap">
+ <section class="hero">
+  <div><div class="kicker">CATÁLOGO OFICIAL</div><h1>Sua ideia.<br><span style="color:var(--gold)">Nossa impressão.</span></h1><p>Peças em impressão 3D, arte sacra, personalizados e soluções criativas. Explore os produtos e solicite seu pedido diretamente pelo WhatsApp.</p></div>
+  <div class="hero-card"><div class="mark">D</div><small>DECASTRO3D</small></div>
+ </section>
+ <section class="controls">
+  <div class="filters" id="filters">
+   <button class="filter active" data-filter="Todos">Todos</button>
+   <button class="filter" data-filter="Arte sacra">Arte sacra</button>
+   <button class="filter" data-filter="Personalizados">Personalizados</button>
+   <button class="filter" data-filter="Eventos">Eventos</button>
+   <button class="filter" data-filter="Organização">Organização</button>
+  </div>
+  <input class="search" id="search" placeholder="Buscar produto..." aria-label="Buscar produto">
+ </section>
+ <section class="grid" id="products"></section>
+ <section class="admin open" id="admin">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><h2>Gerenciar produtos</h2><button class="ghost" type="button" id="toggleAdmin">Ocultar gerenciamento</button></div>
+  <form id="productForm">
+   <input type="hidden" id="editId">
+   <div class="formgrid">
+    <div><label for="name">Nome do produto *</label><input id="name" required placeholder="Ex.: Mini imagem de São Benedito"></div>
+    <div><label for="category">Categoria *</label><select id="category"><option>Arte sacra</option><option>Personalizados</option><option>Eventos</option><option>Organização</option></select></div>
+    <div><label for="price">Preço (R$) *</label><input id="price" type="number" min="0" step="0.01" required placeholder="Ex.: 39,90"></div>
+    <div><label for="material">Material</label><input id="material" placeholder="Filamento PLA, resina..."></div>
+    <div><label for="size">Medidas</label><input id="size" placeholder="Ex.: 10 cm de altura"></div>
+    <div><label for="photo">Foto do produto</label><input id="photo" type="file" accept="image/*"></div>
+    <div class="wide"><label for="description">Descrição</label><textarea id="description" placeholder="Detalhes, cores disponíveis, personalização..."></textarea></div>
+   </div>
+   <div class="admin-actions"><button type="submit">Salvar produto</button><button class="secondary" type="button" id="clearForm">Limpar formulário</button><button class="ghost" type="button" id="exportData">Exportar backup</button><label class="btn secondary" style="display:inline-flex;align-items:center;margin:0">Importar backup<input id="importData" type="file" accept="application/json" hidden></label></div>
+  </form>
+  <div class="notice">Os produtos e fotos ficam salvos neste navegador/dispositivo. Exporte um backup antes de trocar de aparelho ou limpar os dados do navegador. Para que as alterações apareçam para todos os visitantes, será necessário atualizar o arquivo publicado do catálogo.</div>
+  <div class="adminlist" id="adminList"></div>
+ </section>
+</main>
+<footer><div class="wrap footerrow"><div><strong style="color:#eee">DECASTRO3D</strong><br>Impressão 3D em filamento e resina<br>© <span id="year"></span> DECASTRO3D</div><div class="social"><a href="https://www.instagram.com/decastro.3d/" target="_blank" rel="noopener">@decastro.3d</a><a href="https://www.instagram.com/ateliersaobenedito/" target="_blank" rel="noopener">@ateliersaobenedito</a><a href="https://wa.me/5573998723371" target="_blank" rel="noopener">(73) 99872-3371</a></div></div></footer>
+<script>
+const KEY='decastro3d_catalog_v1';
+let products=JSON.parse(localStorage.getItem(KEY)||'[]');
+let activeFilter='Todos';
+const $=id=>document.getElementById(id);
+const money=v=>Number(v).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const save=()=>localStorage.setItem(KEY,JSON.stringify(products));
+function render(){
+ const q=$('search').value.toLowerCase().trim();
+ const list=products.filter(p=>(activeFilter==='Todos'||p.category===activeFilter)&&[p.name,p.description,p.material,p.category].join(' ').toLowerCase().includes(q));
+ $('products').innerHTML=list.length?list.map(p=>`<article class="product"><div class="photo">${p.photo?`<img src="${p.photo}" alt="${esc(p.name)}">`:'Foto do produto'}</div><div class="info"><div class="category">${esc(p.category)}</div><h3>${esc(p.name)}</h3><div class="desc">${esc(p.description||'Peça produzida sob encomenda pela DECASTRO3D.')}</div><div class="meta">${[p.material,p.size].filter(Boolean).map(esc).join(' • ')}</div><div class="price">${money(p.price)}</div><div class="actions"><a target="_blank" rel="noopener" href="https://wa.me/5573998723371?text=${encodeURIComponent('Olá! Tenho interesse no produto '+p.name+' do catálogo DECASTRO3D, no valor de '+money(p.price)+'.') }">Pedir pelo WhatsApp</a></div></div></article>`).join(''):'<div class="empty"><strong>Nosso catálogo está sendo preparado.</strong><br>Em breve, novidades e produtos disponíveis por aqui.<br>Enquanto isso, fale conosco pelo WhatsApp!</div>';
+ renderAdmin();
+}
+function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function renderAdmin(){
+ $('adminList').innerHTML=products.map(p=>`<div class="adminitem"><span>${esc(p.name)} — ${money(p.price)}</span><span><button class="secondary" onclick="editProduct('${p.id}')">Editar</button> <button class="ghost" onclick="deleteProduct('${p.id}')">Excluir</button></span></div>`).join('');
+}
+function clearForm(){ $('productForm').reset();$('editId').value=''; }
+window.editProduct=id=>{const p=products.find(x=>x.id===id);if(!p)return;$('editId').value=id;$('name').value=p.name;$('category').value=p.category;$('price').value=p.price;$('material').value=p.material||'';$('size').value=p.size||'';$('description').value=p.description||'';window.scrollTo({top:$('admin').offsetTop,behavior:'smooth'});};
+window.deleteProduct=id=>{if(confirm('Excluir este produto do catálogo neste navegador?')){products=products.filter(p=>p.id!==id);save();render();}};
+$('filters').addEventListener('click',e=>{if(!e.target.matches('[data-filter]'))return;activeFilter=e.target.dataset.filter;document.querySelectorAll('.filter').forEach(b=>b.classList.toggle('active',b===e.target));render();});
+$('search').addEventListener('input',render);
+$('productForm').addEventListener('submit',async e=>{
+ e.preventDefault();
+ const id=$('editId').value||crypto.randomUUID();
+ const old=products.find(p=>p.id===id);
+ let photo=old?.photo||'';
+ const file=$('photo').files[0];
+ if(file){photo=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(file);});}
+ const p={id,name:$('name').value.trim(),category:$('category').value,price:Number($('price').value),material:$('material').value.trim(),size:$('size').value.trim(),description:$('description').value.trim(),photo};
+ const idx=products.findIndex(x=>x.id===id);if(idx>=0)products[idx]=p;else products.unshift(p);
+ save();clearForm();render();alert('Produto salvo neste navegador!');
+});
+$('clearForm').onclick=clearForm;
+$('exportData').onclick=()=>{const blob=new Blob([JSON.stringify(products,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='backup-catalogo-decastro3d.json';a.click();URL.revokeObjectURL(a.href);};
+$('importData').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const data=JSON.parse(await f.text());if(!Array.isArray(data))throw Error();products=data;save();render();alert('Backup importado!');}catch{alert('Não foi possível importar esse arquivo.');}e.target.value='';};
+$('year').textContent=new Date().getFullYear();
+$('toggleAdmin').onclick=()=>{const opened=$('admin').classList.toggle('open');$('toggleAdmin').textContent=opened?'Ocultar gerenciamento':'Abrir gerenciamento';};
+render();
+</script>
+</body>
+</html>
