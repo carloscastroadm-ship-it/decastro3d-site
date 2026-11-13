@@ -4,10 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#111111">
-<title>DECASTRO3D | Catálogo</title>
+<meta name="description" content="DECASTRO3D — Impressão 3D em filamento e resina. Conheça o catálogo e solicite sua encomenda.">
+<title>DECASTRO3D | Catálogo e Encomendas</title>
 <style>
 :root{--bg:#101010;--panel:#191919;--panel2:#222;--gold:#c9a34a;--gold2:#e5c878;--text:#f5f2eb;--muted:#aaa49a;--line:#38342b}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
 a{color:inherit}.wrap{max-width:1120px;margin:auto;padding:0 18px}
 header{background:linear-gradient(145deg,#080808,#1b1b1b);border-bottom:1px solid var(--line)}
 .top{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 0}
@@ -31,6 +32,15 @@ button.secondary,.btn.secondary{background:transparent;color:var(--gold2)}button
 .meta{font-size:12px;color:#aaa}.price{font-size:22px;font-weight:800;color:var(--gold2);margin-top:auto;padding-top:8px}
 .actions{display:flex;gap:8px;margin-top:8px}.actions a{flex:1;text-align:center;font-size:12px;padding:10px 8px;border-radius:7px;text-decoration:none;background:var(--gold);color:#17130a;font-weight:bold}
 .empty{border:1px dashed #555;border-radius:14px;padding:32px;text-align:center;color:#c6c0b6;grid-column:1/-1;line-height:1.6}
+.order-section{margin:8px 0 42px;padding:26px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,#191919,#111)}
+.order-heading{max-width:720px;margin-bottom:22px}.order-heading h2{font-size:clamp(26px,4vw,36px);margin:9px 0;color:var(--text)}.order-heading p{color:#bcb6ad;line-height:1.6;margin:0}
+.order-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.order-form label{display:block;font-size:12px;color:#d4cdbf;margin-bottom:6px;font-weight:700}
+.order-form input,.order-form select,.order-form textarea{width:100%;padding:12px;border:1px solid #49443a;background:#242424;color:#fff;border-radius:8px;font:inherit;min-width:0}
+.order-form input:focus,.order-form select:focus,.order-form textarea:focus{outline:2px solid var(--gold);border-color:var(--gold)}
+.order-form textarea{min-height:100px;resize:vertical}.order-wide{grid-column:1/-1}
+.order-help{font-size:12px;color:#aaa49a;line-height:1.5;margin-top:6px}
+.order-submit{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:4px}.order-submit button{padding:14px 20px;font-size:14px}
 footer{border-top:1px solid var(--line);padding:25px 0 35px;color:#aaa;font-size:13px}
 .footerrow{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}.social{display:flex;gap:12px;flex-wrap:wrap;color:var(--gold2)}
 .admin{margin:15px 0 30px;border:1px solid var(--line);background:#171717;border-radius:14px;padding:18px;display:none}
@@ -39,6 +49,7 @@ label{display:block;font-size:12px;color:#c9c2b7;margin-bottom:5px}input,select,
 textarea{min-height:75px;resize:vertical}.wide{grid-column:1/-1}.admin-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .notice{font-size:12px;color:#aaa;margin-top:10px;line-height:1.5}.adminlist{margin-top:16px;display:grid;gap:7px}.adminitem{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#222;padding:9px 11px;border-radius:8px;font-size:13px}
 @media(max-width:760px){.hero{grid-template-columns:1fr}.hero-card{min-height:130px}.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.order-section{padding:19px}.order-form{grid-template-columns:1fr}.order-wide{grid-column:auto}}
 @media(max-width:500px){.top{align-items:flex-start;flex-direction:column}.grid{grid-template-columns:1fr}.formgrid{grid-template-columns:1fr}.wide{grid-column:auto}.hero{padding-top:28px}}
 </style>
 </head>
@@ -47,7 +58,7 @@ textarea{min-height:75px;resize:vertical}.wide{grid-column:1/-1}.admin-actions{d
  <div class="wrap">
   <div class="top">
    <div><div class="brand">DECASTRO<span>3D</span></div><div class="tag">IMPRESSÃO 3D EM FILAMENTO E RESINA</div></div>
-   <nav><a class="btn secondary" href="index.html">Voltar ao cartão</a><a class="btn secondary" href="https://www.instagram.com/decastro.3d/" target="_blank" rel="noopener">Instagram</a><a class="btn" href="https://wa.me/5573998723371?text=Ol%C3%A1!%20Vim%20pelo%20cat%C3%A1logo%20da%20DECASTRO3D." target="_blank" rel="noopener">Falar no WhatsApp</a></nav>
+   <nav><a class="btn secondary" href="index.html">Voltar ao cartão</a><a class="btn secondary" href="https://www.instagram.com/decastro.3d/" target="_blank" rel="noopener">Instagram</a><a class="btn" href="#encomenda">Fazer encomenda</a><a class="btn secondary" href="https://wa.me/5573998723371?text=Ol%C3%A1!%20Vim%20pelo%20cat%C3%A1logo%20da%20DECASTRO3D." target="_blank" rel="noopener">WhatsApp</a></nav>
   </div>
  </div>
 </header>
@@ -67,6 +78,29 @@ textarea{min-height:75px;resize:vertical}.wide{grid-column:1/-1}.admin-actions{d
   <input class="search" id="search" placeholder="Buscar produto..." aria-label="Buscar produto">
  </section>
  <section class="grid" id="products"></section>
+
+ <section class="order-section" id="encomenda">
+  <div class="order-heading">
+   <div class="kicker">ATENDIMENTO PERSONALIZADO</div>
+   <h2>Faça sua encomenda</h2>
+   <p>Conte o que você deseja produzir. Nossa equipe receberá as informações pelo WhatsApp e dará continuidade ao atendimento para avaliar detalhes, prazo e orçamento.</p>
+  </div>
+  <form class="order-form" id="orderForm">
+   <div><label for="clientName">Seu nome *</label><input id="clientName" name="clientName" autocomplete="name" required placeholder="Como podemos chamar você?"></div>
+   <div><label for="clientPhone">Seu WhatsApp *</label><input id="clientPhone" name="clientPhone" type="tel" autocomplete="tel" required placeholder="(DDD) 99999-9999"></div>
+   <div><label for="orderCategory">Categoria *</label><select id="orderCategory" name="orderCategory" required><option value="">Selecione</option><option>Arte sacra</option><option>Personalizados</option><option>Eventos</option><option>Organização</option><option>Outro / ainda não sei</option></select></div>
+   <div><label for="orderMaterial">Material desejado</label><select id="orderMaterial" name="orderMaterial"><option value="">A definir / preciso de orientação</option><option>Filamento</option><option>Resina</option><option>Não sei — preciso de orientação</option></select></div>
+   <div><label for="orderProduct">O que deseja encomendar? *</label><input id="orderProduct" name="orderProduct" required placeholder="Descreva o produto ou sua ideia"></div>
+   <div><label for="orderQuantity">Quantidade</label><input id="orderQuantity" name="orderQuantity" type="number" min="1" step="1" placeholder="Ex.: 10"></div>
+   <div><label for="orderSize">Medidas / tamanho</label><input id="orderSize" name="orderSize" placeholder="Ex.: 10 cm de altura"></div>
+   <div><label for="orderColors">Cores desejadas</label><input id="orderColors" name="orderColors" placeholder="Ex.: branco e dourado"></div>
+   <div><label for="orderDeadline">Prazo desejado</label><input id="orderDeadline" name="orderDeadline" type="date"></div>
+   <div class="order-wide"><label for="orderNotes">Observações e detalhes</label><textarea id="orderNotes" name="orderNotes" placeholder="Conte mais sobre sua ideia, acabamento, personalização ou ocasião."></textarea></div>
+   <div class="order-wide"><label for="referencePhoto">Foto de referência (opcional)</label><input id="referencePhoto" name="referencePhoto" type="file" accept="image/*"><div class="order-help">Se selecionar uma imagem, depois de abrir o WhatsApp será necessário anexá-la manualmente na conversa.</div></div>
+   <div class="order-wide order-submit"><button type="submit">ENVIAR ENCOMENDA PELO WHATSAPP</button><span class="order-help">O envio só será concluído quando você confirmar a mensagem no WhatsApp.</span></div>
+  </form>
+ </section>
+
  <section class="admin open" id="admin">
   <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><h2>Gerenciar produtos</h2><button class="ghost" type="button" id="toggleAdmin">Ocultar gerenciamento</button></div>
   <form id="productForm">
@@ -125,6 +159,35 @@ $('exportData').onclick=()=>{const blob=new Blob([JSON.stringify(products,null,2
 $('importData').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const data=JSON.parse(await f.text());if(!Array.isArray(data))throw Error();products=data;save();render();alert('Backup importado!');}catch{alert('Não foi possível importar esse arquivo.');}e.target.value='';};
 $('year').textContent=new Date().getFullYear();
 $('toggleAdmin').onclick=()=>{const opened=$('admin').classList.toggle('open');$('toggleAdmin').textContent=opened?'Ocultar gerenciamento':'Abrir gerenciamento';};
+
+$('orderForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ const date=$('orderDeadline').value;
+ const formattedDate=date?new Date(date+'T12:00:00').toLocaleDateString('pt-BR'):'A combinar';
+ const lines=[
+  'Olá! Gostaria de fazer uma encomenda com a DECASTRO3D.',
+  '',
+  'DADOS DO CLIENTE',
+  'Nome: '+$('clientName').value.trim(),
+  'WhatsApp: '+$('clientPhone').value.trim(),
+  '',
+  'DETALHES DA ENCOMENDA',
+  'Categoria: '+$('orderCategory').value,
+  'Produto/ideia: '+$('orderProduct').value.trim(),
+  'Material: '+($('orderMaterial').value||'A definir'),
+  'Quantidade: '+($('orderQuantity').value||'Não informada'),
+  'Medidas/tamanho: '+($('orderSize').value.trim()||'Não informado'),
+  'Cores: '+($('orderColors').value.trim()||'Não informadas'),
+  'Prazo desejado: '+formattedDate,
+  'Observações: '+($('orderNotes').value.trim()||'Nenhuma'),
+  '',
+  'Enviei estas informações pelo formulário do catálogo.'
+ ];
+ const message=encodeURIComponent(lines.join('\n'));
+ window.open('https://wa.me/5573998723371?text='+message,'_blank','noopener');
+ const file=$('referencePhoto').files[0];
+ if(file)alert('O WhatsApp será aberto com os dados da encomenda. Para enviar a foto de referência, anexe o arquivo manualmente na conversa.');
+});
 render();
 </script>
 </body>
