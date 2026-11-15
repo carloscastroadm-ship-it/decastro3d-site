@@ -1,0 +1,289 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Administração | DECASTRO3D</title>
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<style>
+:root{--bg:#101010;--panel:#1b1b1b;--gold:#c9a45c;--text:#f5f2eb;--muted:#aaa}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px Arial,sans-serif}
+header{padding:22px;background:#080808;border-bottom:1px solid #3b3020}
+header h1{margin:0;color:var(--gold);font-size:23px}
+header p{margin:7px 0 0;color:var(--muted)}
+main{max-width:1000px;margin:auto;padding:18px}
+section{background:var(--panel);border:1px solid #333;border-radius:12px;padding:18px;margin:16px 0}
+h2{font-size:18px;color:var(--gold);margin:0 0 15px}
+label{display:block;margin:12px 0 6px;color:#ddd}
+input,textarea,select{width:100%;padding:12px;border-radius:7px;border:1px solid #444;background:#101010;color:white;font-size:15px}
+textarea{min-height:90px;resize:vertical}
+button{padding:12px 16px;border:0;border-radius:7px;background:var(--gold);color:#111;font-weight:bold;margin:12px 7px 0 0;cursor:pointer}
+button.secondary{background:#333;color:white}
+button.danger{background:#8e3030;color:white}
+button:disabled{opacity:.5}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.product{padding:13px;border:1px solid #444;border-radius:8px;margin:10px 0}
+.product strong{display:block;margin-bottom:5px}
+.small{font-size:13px;color:var(--muted)}
+#app{display:none}
+#login{max-width:500px;margin:40px auto;text-align:center}
+#status{color:var(--gold);white-space:pre-wrap;margin-top:12px}
+.actions{display:flex;flex-wrap:wrap;gap:5px}
+@media(max-width:600px){.row{grid-template-columns:1fr}main{padding:10px}section{padding:14px}}
+</style>
+</head>
+<body>
+<header>
+<h1>DECASTRO3D</h1>
+<p>Painel de administração do catálogo</p>
+</header>
+
+<main>
+<section id="login">
+<h2>Acesso administrativo</h2>
+<p>Entre com seu usuário autorizado para gerenciar a loja.</p>
+<button onclick="login()">Entrar / Fazer login</button>
+<button class="secondary" onclick="logout()">Sair</button>
+<p id="loginStatus" class="small"></p>
+</section>
+
+<div id="app">
+<section>
+<h2>Produtos do catálogo</h2>
+<div id="products"></div>
+<button onclick="newProduct()">+ Novo produto</button>
+</section>
+
+<section>
+<h2>Editar produto</h2>
+<input type="hidden" id="productId">
+<label>Nome do produto</label>
+<input id="name" placeholder="Nome do produto">
+<div class="row">
+<div><label>Preço (R$)</label><input id="price" placeholder="204,90"></div>
+<div><label>Categoria</label><input id="category" placeholder="Religiosos, decoração..."></div>
+</div>
+<div class="row">
+<div><label>Material</label><input id="material" placeholder="Filamento ou resina"></div>
+<div><label>Medidas</label><input id="dimensions" placeholder="Altura, largura e profundidade"></div>
+</div>
+<label>Descrição</label>
+<textarea id="description" placeholder="Descrição do produto"></textarea>
+<label>Foto (endereço da imagem)</label>
+<input id="image" placeholder="https://...">
+<label>Visibilidade</label>
+<select id="active"><option value="true">Publicado</option><option value="false">Oculto</option></select>
+<button onclick="saveProduct()">Salvar produto</button>
+<button class="secondary" onclick="newProduct()">Limpar formulário</button>
+</section>
+
+<section>
+<h2>Aparência e textos</h2>
+<label>Nome exibido no site</label>
+<input id="siteTitle" placeholder="DECASTRO3D">
+<label>Frase principal</label>
+<input id="headline" placeholder="Sua ideia. Nossa impressão.">
+<label>Cor de destaque</label>
+<input id="accent" type="color" value="#c9a45c">
+<label>Logo (endereço da imagem)</label>
+<input id="logo" placeholder="https://...">
+<button onclick="saveSettings()">Salvar aparência</button>
+</section>
+
+<section>
+<h2>Contatos</h2>
+<label>WhatsApp (com código do país e DDD)</label>
+<input id="whatsapp" placeholder="55...">
+<label>Instagram</label>
+<input id="instagram" placeholder="https://instagram.com/...">
+<button onclick="saveSettings()">Salvar contatos</button>
+</section>
+
+<section>
+<h2>Backup e segurança</h2>
+<p class="small">Baixe uma cópia dos dados cadastrados ou restaure um backup JSON.</p>
+<button onclick="backup()">Baixar backup</button>
+<label>Restaurar backup JSON</label>
+<input type="file" id="restoreFile" accept=".json,application/json">
+<button class="secondary" onclick="restore()">Restaurar backup</button>
+</section>
+
+<section>
+<button class="secondary" onclick="loadData()">Atualizar dados</button>
+<button class="danger" onclick="logout()">Encerrar sessão</button>
+<p id="status"></p>
+</section>
+</div>
+</main>
+
+<script>
+let data={products:[],settings:{},contacts:{}};
+let user=null;
+
+function message(t){document.getElementById('status').textContent=t}
+function login(){
+ if(!window.netlifyIdentity){document.getElementById('loginStatus').textContent='Não foi possível carregar o login.';return}
+ netlifyIdentity.open('login');
+}
+function logout(){
+ if(window.netlifyIdentity) netlifyIdentity.logout();
+}
+function authToken(){return user && user.jwt ? user.jwt() : null}
+
+async function api(method,body){
+ const token=authToken();
+ if(!token) throw new Error('Faça login novamente.');
+ const response=await fetch('/.netlify/functions/catalog',{
+  method,
+  headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+  body:body===undefined?undefined:JSON.stringify(body)
+ });
+ if(!response.ok) throw new Error(await response.text() || 'Erro ao acessar os dados.');
+ return response.status===204?null:response.json();
+}
+
+async function loadData(){
+ try{
+  message('Carregando dados...');
+  data=await api('GET') || {products:[],settings:{},contacts:{}};
+  data.products=data.products||[];
+  data.settings=data.settings||{};
+  data.contacts=data.contacts||{};
+  render();
+  message('Dados carregados.');
+ }catch(e){message('Não foi possível carregar: '+e.message)}
+}
+
+function render(){
+ document.getElementById('products').innerHTML='';
+ data.products.forEach((p,i)=>{
+  const div=document.createElement('div');
+  div.className='product';
+  const title=document.createElement('strong');
+  title.textContent=p.name||'Produto sem nome';
+  const info=document.createElement('div');
+  info.className='small';
+  info.textContent='R$ '+(p.price||'')+' • '+(p.active===false?'Oculto':'Publicado');
+  const edit=document.createElement('button');
+  edit.textContent='Editar';
+  edit.onclick=()=>editProduct(i);
+  const del=document.createElement('button');
+  del.textContent='Excluir';
+  del.className='danger';
+  del.onclick=()=>deleteProduct(i);
+  div.append(title,info,edit,del);
+  document.getElementById('products').appendChild(div);
+ });
+ document.getElementById('siteTitle').value=data.settings.siteTitle||'DECASTRO3D';
+ document.getElementById('headline').value=data.settings.headline||'';
+ document.getElementById('accent').value=data.settings.accent||'#c9a45c';
+ document.getElementById('logo').value=data.settings.logo||'';
+ document.getElementById('whatsapp').value=data.contacts.whatsapp||'';
+ document.getElementById('instagram').value=data.contacts.instagram||'';
+}
+
+function newProduct(){
+ ['productId','name','price','category','material','dimensions','description','image'].forEach(id=>document.getElementById(id).value='');
+ document.getElementById('active').value='true';
+}
+function editProduct(i){
+ const p=data.products[i];
+ document.getElementById('productId').value=i;
+ document.getElementById('name').value=p.name||'';
+ document.getElementById('price').value=p.price||'';
+ document.getElementById('category').value=p.category||'';
+ document.getElementById('material').value=p.material||'';
+ document.getElementById('dimensions').value=p.dimensions||'';
+ document.getElementById('description').value=p.description||'';
+ document.getElementById('image').value=p.image||'';
+ document.getElementById('active').value=String(p.active!==false);
+ document.getElementById('name').scrollIntoView({behavior:'smooth'});
+}
+async function saveProduct(){
+ const p={
+  id:document.getElementById('productId').value,
+  name:document.getElementById('name').value.trim(),
+  price:document.getElementById('price').value.trim(),
+  category:document.getElementById('category').value.trim(),
+  material:document.getElementById('material').value.trim(),
+  dimensions:document.getElementById('dimensions').value.trim(),
+  description:document.getElementById('description').value.trim(),
+  image:document.getElementById('image').value.trim(),
+  active:document.getElementById('active').value==='true'
+ };
+ if(!p.name){message('Informe o nome do produto.');return}
+ const index=Number(p.id);
+ if(p.id!=='' && Number.isInteger(index) && index>=0 && index<data.products.length)data.products[index]=p;
+ else {p.id='produto-'+Date.now();data.products.push(p)}
+ await saveAll();
+ newProduct();
+}
+async function deleteProduct(i){
+ if(!confirm('Deseja excluir este produto?'))return;
+ data.products.splice(i,1);
+ await saveAll();
+}
+async function saveSettings(){
+ data.settings={
+  siteTitle:document.getElementById('siteTitle').value,
+  headline:document.getElementById('headline').value,
+  accent:document.getElementById('accent').value,
+  logo:document.getElementById('logo').value
+ };
+ data.contacts={
+  whatsapp:document.getElementById('whatsapp').value,
+  instagram:document.getElementById('instagram').value
+ };
+ await saveAll();
+}
+async function saveAll(){
+ try{
+  message('Salvando...');
+  await api('PUT',data);
+  render();
+  message('Alterações salvas.');
+ }catch(e){message('Erro ao salvar: '+e.message)}
+}
+function backup(){
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+ const a=document.createElement('a');
+ a.href=URL.createObjectURL(blob);
+ a.download='backup-decastro3d.json';
+ a.click();
+ URL.revokeObjectURL(a.href);
+}
+async function restore(){
+ const file=document.getElementById('restoreFile').files[0];
+ if(!file){message('Escolha um arquivo JSON.');return}
+ try{
+  const restored=JSON.parse(await file.text());
+  if(!Array.isArray(restored.products))throw new Error('Arquivo de backup inválido.');
+  data=restored;
+  await saveAll();
+ }catch(e){message('Não foi possível restaurar: '+e.message)}
+}
+
+if(window.netlifyIdentity){
+ netlifyIdentity.on('init',u=>{
+  user=u;
+  if(u){document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';loadData()}
+ });
+ netlifyIdentity.on('login',u=>{
+  user=u;
+  document.getElementById('login').style.display='none';
+  document.getElementById('app').style.display='block';
+  netlifyIdentity.close();
+  loadData();
+ });
+ netlifyIdentity.on('logout',()=>{
+  user=null;
+  document.getElementById('app').style.display='none';
+  document.getElementById('login').style.display='block';
+  document.getElementById('loginStatus').textContent='Sessão encerrada.';
+ });
+}
+</script>
+</body>
+</html>
