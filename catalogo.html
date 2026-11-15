@@ -124,6 +124,19 @@ textarea{min-height:75px;resize:vertical}.wide{grid-column:1/-1}.admin-actions{d
 <script>
 const KEY='decastro3d_catalog_v1';
 let products=JSON.parse(localStorage.getItem(KEY)||'[]');
+
+if(!products.some(p=>p.id==='presepio-natalino-2026')){
+ products.unshift({
+  id:'presepio-natalino-2026',
+  name:'Presépio Natalino Iluminado',
+  category:'Arte sacra',
+  price:204.90,
+  material:'Impressão 3D em filamento',
+  size:'Largura: 19,19 cm × Profundidade: 17,90 cm × Altura: 15,22 cm',
+  description:'Presépio natalino iluminado, com acabamento especial. Uma peça para celebrar o verdadeiro sentido do Natal.'
+ });
+ localStorage.setItem(KEY,JSON.stringify(products));
+}
 let activeFilter='Todos';
 const $=id=>document.getElementById(id);
 const money=v=>Number(v).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
