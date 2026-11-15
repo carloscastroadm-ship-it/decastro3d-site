@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Administração | DECASTRO3D</title>
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
 <style>
 :root{--bg:#101010;--panel:#1b1b1b;--gold:#c9a45c;--text:#f5f2eb;--muted:#aaa}
 *{box-sizing:border-box}
@@ -34,6 +35,7 @@ button:disabled{opacity:.5}
 @media(max-width:600px){.row{grid-template-columns:1fr}main{padding:10px}section{padding:14px}}
 </style>
 </head>
+
 <body>
 <header>
 <h1>DECASTRO3D</h1>
@@ -41,15 +43,19 @@ button:disabled{opacity:.5}
 </header>
 
 <main>
+
 <section id="login">
 <h2>Acesso administrativo</h2>
 <p>Entre com seu usuário autorizado para gerenciar a loja.</p>
-<button onclick="login()"><button onclick="alert('O botão está respondendo ao clique'); login()"><button onclick="alert('Netlify Identity: ' + typeof window.netlifyIdentity); login()">Entrar / Fazer login</button></button></button>
-<button class="secondary" onclick="logout()">Sair</button>
+
+<button type="button" onclick="login()">Entrar / Fazer login</button>
+<button type="button" class="secondary" onclick="logout()">Sair</button>
+
 <p id="loginStatus" class="small"></p>
 </section>
 
 <div id="app">
+
 <section>
 <h2>Produtos do catálogo</h2>
 <div id="products"></div>
@@ -58,55 +64,90 @@ button:disabled{opacity:.5}
 
 <section>
 <h2>Editar produto</h2>
+
 <input type="hidden" id="productId">
+
 <label>Nome do produto</label>
 <input id="name" placeholder="Nome do produto">
+
 <div class="row">
-<div><label>Preço (R$)</label><input id="price" placeholder="204,90"></div>
-<div><label>Categoria</label><input id="category" placeholder="Religiosos, decoração..."></div>
+<div>
+<label>Preço (R$)</label>
+<input id="price" placeholder="204,90">
 </div>
+<div>
+<label>Categoria</label>
+<input id="category" placeholder="Religiosos, decoração...">
+</div>
+</div>
+
 <div class="row">
-<div><label>Material</label><input id="material" placeholder="Filamento ou resina"></div>
-<div><label>Medidas</label><input id="dimensions" placeholder="Altura, largura e profundidade"></div>
+<div>
+<label>Material</label>
+<input id="material" placeholder="Filamento ou resina">
 </div>
+<div>
+<label>Medidas</label>
+<input id="dimensions" placeholder="Altura, largura e profundidade">
+</div>
+</div>
+
 <label>Descrição</label>
 <textarea id="description" placeholder="Descrição do produto"></textarea>
+
 <label>Foto (endereço da imagem)</label>
 <input id="image" placeholder="https://...">
+
 <label>Visibilidade</label>
-<select id="active"><option value="true">Publicado</option><option value="false">Oculto</option></select>
+<select id="active">
+<option value="true">Publicado</option>
+<option value="false">Oculto</option>
+</select>
+
 <button onclick="saveProduct()">Salvar produto</button>
 <button class="secondary" onclick="newProduct()">Limpar formulário</button>
 </section>
 
 <section>
 <h2>Aparência e textos</h2>
+
 <label>Nome exibido no site</label>
 <input id="siteTitle" placeholder="DECASTRO3D">
+
 <label>Frase principal</label>
 <input id="headline" placeholder="Sua ideia. Nossa impressão.">
+
 <label>Cor de destaque</label>
 <input id="accent" type="color" value="#c9a45c">
+
 <label>Logo (endereço da imagem)</label>
 <input id="logo" placeholder="https://...">
+
 <button onclick="saveSettings()">Salvar aparência</button>
 </section>
 
 <section>
 <h2>Contatos</h2>
+
 <label>WhatsApp (com código do país e DDD)</label>
 <input id="whatsapp" placeholder="55...">
+
 <label>Instagram</label>
 <input id="instagram" placeholder="https://instagram.com/...">
+
 <button onclick="saveSettings()">Salvar contatos</button>
 </section>
 
 <section>
 <h2>Backup e segurança</h2>
+
 <p class="small">Baixe uma cópia dos dados cadastrados ou restaure um backup JSON.</p>
+
 <button onclick="backup()">Baixar backup</button>
+
 <label>Restaurar backup JSON</label>
 <input type="file" id="restoreFile" accept=".json,application/json">
+
 <button class="secondary" onclick="restore()">Restaurar backup</button>
 </section>
 
@@ -115,6 +156,7 @@ button:disabled{opacity:.5}
 <button class="danger" onclick="logout()">Encerrar sessão</button>
 <p id="status"></p>
 </section>
+
 </div>
 </main>
 
@@ -122,61 +164,113 @@ button:disabled{opacity:.5}
 let data={products:[],settings:{},contacts:{}};
 let user=null;
 
-function message(t){document.getElementById('status').textContent=t}
+function message(t){
+ document.getElementById('status').textContent=t;
+}
+
 function login(){
- if(!window.netlifyIdentity){document.getElementById('loginStatus').textContent='Não foi possível carregar o login.';return}
- window.netlifyIdentity.open();
-alert('Comando de abertura executado');
+ const status=document.getElementById('loginStatus');
+
+ if(!window.netlifyIdentity){
+  status.textContent='Não foi possível carregar o sistema de login. Atualize a página.';
+  return;
+ }
+
+ try{
+  status.textContent='Abrindo acesso administrativo...';
+  window.netlifyIdentity.open('login');
+ }catch(e){
+  status.textContent='Erro ao abrir o login: '+e.message;
+ }
 }
+
 function logout(){
- if(window.netlifyIdentity) netlifyIdentity.logout();
+ if(!window.netlifyIdentity){
+  document.getElementById('loginStatus').textContent='Sistema de login não carregado.';
+  return;
+ }
+
+ try{
+  window.netlifyIdentity.logout();
+ }catch(e){
+  document.getElementById('loginStatus').textContent='Erro ao sair: '+e.message;
+ }
 }
-function authToken(){return user && user.jwt ? user.jwt() : null}
+
+function authToken(){
+ return user && user.jwt ? user.jwt() : null;
+}
 
 async function api(method,body){
  const token=authToken();
+
  if(!token) throw new Error('Faça login novamente.');
+
  const response=await fetch('/.netlify/functions/catalog',{
   method,
-  headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+  headers:{
+   'Content-Type':'application/json',
+   'Authorization':'Bearer '+token
+  },
   body:body===undefined?undefined:JSON.stringify(body)
  });
- if(!response.ok) throw new Error(await response.text() || 'Erro ao acessar os dados.');
+
+ if(!response.ok){
+  throw new Error(await response.text() || 'Erro ao acessar os dados.');
+ }
+
  return response.status===204?null:response.json();
 }
 
 async function loadData(){
  try{
   message('Carregando dados...');
-  data=await api('GET') || {products:[],settings:{},contacts:{}};
+
+  data=await api('GET') || {
+   products:[],
+   settings:{},
+   contacts:{}
+  };
+
   data.products=data.products||[];
   data.settings=data.settings||{};
   data.contacts=data.contacts||{};
+
   render();
   message('Dados carregados.');
- }catch(e){message('Não foi possível carregar: '+e.message)}
+
+ }catch(e){
+  message('Não foi possível carregar: '+e.message);
+ }
 }
 
 function render(){
  document.getElementById('products').innerHTML='';
+
  data.products.forEach((p,i)=>{
   const div=document.createElement('div');
   div.className='product';
+
   const title=document.createElement('strong');
   title.textContent=p.name||'Produto sem nome';
+
   const info=document.createElement('div');
   info.className='small';
   info.textContent='R$ '+(p.price||'')+' • '+(p.active===false?'Oculto':'Publicado');
+
   const edit=document.createElement('button');
   edit.textContent='Editar';
   edit.onclick=()=>editProduct(i);
+
   const del=document.createElement('button');
   del.textContent='Excluir';
   del.className='danger';
   del.onclick=()=>deleteProduct(i);
+
   div.append(title,info,edit,del);
   document.getElementById('products').appendChild(div);
  });
+
  document.getElementById('siteTitle').value=data.settings.siteTitle||'DECASTRO3D';
  document.getElementById('headline').value=data.settings.headline||'';
  document.getElementById('accent').value=data.settings.accent||'#c9a45c';
@@ -186,11 +280,19 @@ function render(){
 }
 
 function newProduct(){
- ['productId','name','price','category','material','dimensions','description','image'].forEach(id=>document.getElementById(id).value='');
+ [
+  'productId','name','price','category','material',
+  'dimensions','description','image'
+ ].forEach(id=>{
+  document.getElementById(id).value='';
+ });
+
  document.getElementById('active').value='true';
 }
+
 function editProduct(i){
  const p=data.products[i];
+
  document.getElementById('productId').value=i;
  document.getElementById('name').value=p.name||'';
  document.getElementById('price').value=p.price||'';
@@ -200,8 +302,10 @@ function editProduct(i){
  document.getElementById('description').value=p.description||'';
  document.getElementById('image').value=p.image||'';
  document.getElementById('active').value=String(p.active!==false);
+
  document.getElementById('name').scrollIntoView({behavior:'smooth'});
 }
+
 async function saveProduct(){
  const p={
   id:document.getElementById('productId').value,
@@ -214,18 +318,32 @@ async function saveProduct(){
   image:document.getElementById('image').value.trim(),
   active:document.getElementById('active').value==='true'
  };
- if(!p.name){message('Informe o nome do produto.');return}
+
+ if(!p.name){
+  message('Informe o nome do produto.');
+  return;
+ }
+
  const index=Number(p.id);
- if(p.id!=='' && Number.isInteger(index) && index>=0 && index<data.products.length)data.products[index]=p;
- else {p.id='produto-'+Date.now();data.products.push(p)}
+
+ if(p.id!=='' && Number.isInteger(index) && index>=0 && index<data.products.length){
+  data.products[index]=p;
+ }else{
+  p.id='produto-'+Date.now();
+  data.products.push(p);
+ }
+
  await saveAll();
  newProduct();
 }
+
 async function deleteProduct(i){
  if(!confirm('Deseja excluir este produto?'))return;
+
  data.products.splice(i,1);
  await saveAll();
 }
+
 async function saveSettings(){
  data.settings={
   siteTitle:document.getElementById('siteTitle').value,
@@ -233,43 +351,72 @@ async function saveSettings(){
   accent:document.getElementById('accent').value,
   logo:document.getElementById('logo').value
  };
+
  data.contacts={
   whatsapp:document.getElementById('whatsapp').value,
   instagram:document.getElementById('instagram').value
  };
+
  await saveAll();
 }
+
 async function saveAll(){
  try{
   message('Salvando...');
   await api('PUT',data);
   render();
   message('Alterações salvas.');
- }catch(e){message('Erro ao salvar: '+e.message)}
+ }catch(e){
+  message('Erro ao salvar: '+e.message);
+ }
 }
+
 function backup(){
- const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+ const blob=new Blob([JSON.stringify(data,null,2)],{
+  type:'application/json'
+ });
+
  const a=document.createElement('a');
  a.href=URL.createObjectURL(blob);
  a.download='backup-decastro3d.json';
  a.click();
+
  URL.revokeObjectURL(a.href);
 }
+
 async function restore(){
  const file=document.getElementById('restoreFile').files[0];
- if(!file){message('Escolha um arquivo JSON.');return}
+
+ if(!file){
+  message('Escolha um arquivo JSON.');
+  return;
+ }
+
  try{
   const restored=JSON.parse(await file.text());
-  if(!Array.isArray(restored.products))throw new Error('Arquivo de backup inválido.');
+
+  if(!Array.isArray(restored.products)){
+   throw new Error('Arquivo de backup inválido.');
+  }
+
   data=restored;
+  data.settings=data.settings||{};
+  data.contacts=data.contacts||{};
+
   await saveAll();
- }catch(e){message('Não foi possível restaurar: '+e.message)}
+
+ }catch(e){
+  message('Não foi possível restaurar: '+e.message);
+ }
 }
 
+/* AUTENTICAÇÃO NETLIFY */
 
 if(window.netlifyIdentity){
- netlifyIdentity.on('init',u=>{
+
+ window.netlifyIdentity.on('init',u=>{
   user=u;
+
   if(u){
    document.getElementById('login').style.display='none';
    document.getElementById('app').style.display='block';
@@ -277,18 +424,35 @@ if(window.netlifyIdentity){
   }
  });
 
- netlifyIdentity.on('login',u=>{
+ window.netlifyIdentity.on('login',u=>{
   user=u;
+
   document.getElementById('login').style.display='none';
   document.getElementById('app').style.display='block';
-  netlifyIdentity.close();
+
+  window.netlifyIdentity.close();
   loadData();
  });
 
- netlifyIdentity.on('logout',()=>{
+ window.netlifyIdentity.on('logout',()=>{
   user=null;
+
   document.getElementById('app').style.display='none';
   document.getElementById('login').style.display='block';
+
   document.getElementById('loginStatus').textContent='Sessão encerrada.';
  });
+
+ window.netlifyIdentity.on('error',err=>{
+  document.getElementById('loginStatus').textContent=
+   'Erro de autenticação: '+(err.message||'Verifique a configuração do login.');
+ });
+
+}else{
+ document.getElementById('loginStatus').textContent=
+  'O sistema de autenticação não foi carregado.';
 }
+</script>
+
+</body>
+</html>
