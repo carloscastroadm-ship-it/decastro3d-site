@@ -265,11 +265,44 @@ async function restore(){
  }catch(e){message('Não foi possível restaurar: '+e.message)}
 }
 
+
 if(window.netlifyIdentity){
- netlifyIdentity.on('init',u=>{
+ netlifyIdentity.on('init', async u=>{
   user=u;
-  if(u){document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';loadData()}
+
+  const hash = window.location.hash;
+
+  if(hash.includes('recovery_token=')){
+   try {
+    await netlifyIdentity.handleAuthCallback();
+    user=netlifyIdentity.currentUser();
+
+    if(user){
+     const newPassword=prompt('Digite sua nova senha:');
+
+     if(newPassword && newPassword.length >= 8){
+      await user.update({password:newPassword});
+      alert('Senha atualizada com sucesso!');
+      window.history.replaceState(null,'','/admin/');
+      document.getElementById('login').style.display='block';
+      document.getElementById('app').style.display='none';
+     } else {
+      alert('A senha precisa ter pelo menos 8 caracteres.');
+     }
+    }
+   } catch(error) {
+    alert('Não foi possível validar a recuperação. Solicite um novo link.');
+   }
+   return;
+  }
+
+  if(u){
+   document.getElementById('login').style.display='none';
+   document.getElementById('app').style.display='block';
+   loadData();
+  }
  });
+
  netlifyIdentity.on('login',u=>{
   user=u;
   document.getElementById('login').style.display='none';
@@ -277,6 +310,7 @@ if(window.netlifyIdentity){
   netlifyIdentity.close();
   loadData();
  });
+
  netlifyIdentity.on('logout',()=>{
   user=null;
   document.getElementById('app').style.display='none';
@@ -284,6 +318,3 @@ if(window.netlifyIdentity){
   document.getElementById('loginStatus').textContent='Sessão encerrada.';
  });
 }
-</script>
-</body>
-</html>
