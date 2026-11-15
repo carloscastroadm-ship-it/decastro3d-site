@@ -125,7 +125,8 @@ let user=null;
 function message(t){document.getElementById('status').textContent=t}
 function login(){
  if(!window.netlifyIdentity){document.getElementById('loginStatus').textContent='Não foi possível carregar o login.';return}
- netlifyIdentity.open('login');
+ window.netlifyIdentity.open();
+alert('Comando de abertura executado');
 }
 function logout(){
  if(window.netlifyIdentity) netlifyIdentity.logout();
